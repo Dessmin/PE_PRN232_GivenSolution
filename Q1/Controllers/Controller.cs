@@ -148,30 +148,13 @@ namespace Q1.Controllers
                 .Include(s => s.Enrollments)
                 .ToList();
 
-            var list = new List<StudentDTO>();
-
-            foreach (var entity in entities)
+            var list = entities.Select(entities => new StudentDTO
             {
-                var x = 0;
-                var grade = 0.0;
-
-                foreach (var enrollment in entity.Enrollments)
-                {
-                    if(enrollment.Grade.HasValue)
-                    {
-                        grade += enrollment.Grade.Value;
-                        x++;
-                    }
-                }
-
-                list.Add(new StudentDTO
-                {
-                    StudentId = entity.StudentId,
-                    StudentName = entity.StudentName,
-                    Email = entity.Email,
-                    gpa = x > 0 ? grade / x : 0.0
-                });
-            }
+                StudentId = entities.StudentId,
+                StudentName = entities.StudentName,
+                Email = entities.Email,
+                gpa = entities.Enrollments.Where(e => e.Grade.HasValue).Average(e => e.Grade.Value)
+            });
 
             return Ok(list);
         }
@@ -185,25 +168,14 @@ namespace Q1.Controllers
                 .Include(s => s.Enrollments)
                 .AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(studentName)) entities = entities.Where(e => e.StudentName.Contains(studentName));
+            if (!string.IsNullOrWhiteSpace(studentName)) 
+                entities = entities.Where(e => e.StudentName.Contains(studentName));
 
             var list = new List<StudentDTO>();
 
             foreach (var entity in entities)
             {
-                var x = 0;
-                var grade = 0.0;
-
-                foreach (var enrollment in entity.Enrollments)
-                {
-                    if (enrollment.Grade.HasValue)
-                    {
-                        grade += enrollment.Grade.Value;
-                        x++;
-                    }
-                }
-
-                var gpa = x > 0 ? grade / x : 0.0;
+                var gpa = entity.Enrollments.Where(e => e.Grade.HasValue).Average(e => e.Grade.Value);
 
                 if (minGpa.HasValue && gpa < minGpa) continue;
 
