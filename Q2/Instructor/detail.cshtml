@@ -1,0 +1,43 @@
+﻿@model Q2.HomeController.InstructorDetails
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="detail-title">Instructor's detail</div>
+
+        <div class="info-line">
+            <span class="info-label">Instructor ID:</span> <span id="span_@Model.InstructorId">@Model.InstructorId</span>
+        </div>
+        <div class="info-line">
+            <span class="info-label">Full Name:</span> <span id="span_@Model.FullName">@Model.FullName</span>
+        </div>
+        <div class="info-line">
+            <span class="info-label">Expertise:</span> <span id="span_@Model.Expertise">@Model.Expertise</span>
+        </div>
+
+        <h4 class="mt-4">Assigned Courses:</h4>
+        <table class="table-detail">
+            <thead>
+                <tr>
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                    <th>Credits</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Courses)
+                {
+                <tr>
+                    <td id="td_courseID_@c.CourseId">@c.CourseId</td>
+                    <td id="td_courseName_@c.CourseId">@c.CourseName</td>
+                    <td id="td_credits_@c.CourseId">@c.Credits</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div></body>
+</html>

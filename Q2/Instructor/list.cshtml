@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Q2.HomeController.Instructor>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+</head>
+<body>
+    <div class="container search-wrapper">
+        <h2>Instructor Search</h2>
+
+        <form method="get" action="/Instructor">
+            <div class="form-group">
+                <label>Instructor Name:</label>
+                <input type="text" name="name" id="ip_instructorName" placeholder="40">
+            </div>
+
+            <div class="form-group">
+                <label>Expertise:</label>
+                <input type="text" name="expertise" id="ip_expertise" placeholder="electric">
+            </div>
+
+            <button type="submit" id="bt_search" class="btn-search">Search</button>
+        </form>
+
+        <table class="instructor-table">
+            <thead>
+                <tr>
+                    <th>Instructor Name</th>
+                    <th>Expertise</th>
+                    <th>Hire Date</th>
+                    <th>Total Courses</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var e in Model)
+                {
+                <tr>
+                    <td id="td_fullName_@e.InstructorId">@e.FullName</td>
+                    <td id="td_expertise_@e.InstructorId">@e.Expertise</td>
+                    <td id="td_hireDate_@e.InstructorId">@e.HireDate?.ToString("MM/dd/yyyy")</td>
+                    <td id="td_totalCourses_@e.InstructorId">@e.TotalCourses</td>
+                 
+                    <td>
+                        <a href="/Instructor/@e.InstructorId" id="a_@e.InstructorId">View Courses</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div></body>
+</html>

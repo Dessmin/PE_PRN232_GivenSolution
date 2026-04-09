@@ -1,6 +1,8 @@
 using Q2;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient();
 
 //Initialize UrlUtilities with configuration
 //DO NOT change this code
@@ -9,6 +11,10 @@ Utilities.Initialize(builder.Configuration);
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.UseRouting();
+
+app.MapGet("/", () => Results.Redirect("/Instructor"));
+
+app.MapControllers();
 
 app.Run();
